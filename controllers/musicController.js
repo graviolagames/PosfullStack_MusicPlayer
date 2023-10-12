@@ -13,6 +13,21 @@ const musics = [
     2, 
     "IRan", 
     "IRan.mp3"
+  ),
+  new Music(
+    3, 
+    "Space age love song", 
+    "SpaceAgeLoveSong.mp3"
+  ),
+  new Music(
+    4, 
+    "Stand and deliver", 
+    "StandAndDeliver.MP3"
+  ),
+  new Music(
+    5, 
+    "Whishing", 
+    "Whishing.mp3"
   )
 ];
 
