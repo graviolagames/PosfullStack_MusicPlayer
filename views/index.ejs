@@ -1,14 +1,64 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <title>Lista de Tarefas</title>
+  <title>Minhas Músicas</title>
 </head>
+
 <body>
-  <h1>Minhas Tarefas</h1>
-  <ul>
-    <% tasks.forEach((task) => { %>
-    <li><%= task.title %></li>
-    <% }); %>
-  </ul>
+  <h1>Minhas Musicas</h1>
+  <p>
+    <select id="musics">
+    </select>
+  </p>
+  <audio id="player" controls>
+    Your browser does not support the audio element.
+  </audio>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const addMusicOption = (title, fileName) => {
+        const musicOption = document.createElement("option");
+        musicOption.value = fileName;
+        musicOption.innerHTML = title;
+        return musicOption;
+      };
+
+      const musics = document.getElementById("musics");
+      if (musics) {
+
+        musics.disabled = true;
+        fetch("/musics").then(async (data) => {
+          if (data.ok) {
+            const musicList = await data.json();
+            if (musicList) {
+              musics.add(addMusicOption(":: Selecione a música ::", ""));
+              for (let music of musicList) {
+                musics.add(addMusicOption(music.title, music.fileName));
+              }
+            }
+          } else {
+            musics.add(addMusicOption("Nenhuma música carregada!", ""));
+          }
+        }).finally(() => {
+          musics.disabled = false;
+        });
+
+        musics.addEventListener("change", function (event) {
+
+          if (event.target.value !== "") {
+            const player = document.getElementById("player");
+            if (player) {
+              player.src = `/Music/${event.target.value}`;
+              player.play();
+            }
+          }
+
+        });
+      }
+
+    });
+  </script>
 </body>
+
 </html>
